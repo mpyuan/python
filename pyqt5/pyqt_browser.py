@@ -40,9 +40,9 @@ class MainWindow(QMainWindow):
         # 第一个tab页面
         self.webview = WebEngineView(self)  # self必须要有，是将主窗口作为参数，传给浏览器
 
-        self.webview.load(QUrl("http://localhost/index.php"))
+        # self.webview.load(QUrl("http://localhost/index.php"))
         self.webview.load(QUrl("http://192.168.1.102:8099/backend/site/login"))
-        self.webview.load(QUrl("http://192.168.1.102:9010/index2.html"))
+        # self.webview.load(QUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx636a8419238f974e&redirect_uri=https%3A%2F%2Fgzl.yitong111.com%2Ffrontend%2Fsite%2Fadd-user&response_type=code&scope=snsapi_userinfo&state=769ed0a09a33c9cb306b58b589ff6750&uin=MTU5NzA1MjcwNQ%3D%3D&key=abfa9467dbd5851e5c89936aeb3907bdb04d2567a190547c482ecae09dd6534f710de62282cdd3958c73474c20b567d72210515ba9803eff6de664727e95b722e493ba4e462f8defbf85c862d07651e212dac4a82982b9c2b264456996a67065c0f622388f24187f051b6c244f2b90a9a67dc8617b1cbbceedba9f0c502c056a&version=63010043&pass_ticket=IjzkjgFeyizqCAm3Nt9dlI2pF1kW6IaVwVGGY2cCCfS2LSZ7t3MGVOVt2%2FedOu3y"))
 
         self.create_tab(self.webview)
 
@@ -121,12 +121,14 @@ class WebEngineView(QWebEngineView):
 
     def __init__(self, mainwindow, parent=None):
         useragent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat'
-        useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36'
-        # useragent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1301.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.5 WindowsWechat'
+        # useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36'
+        useragent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1301.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI micromessenger/7.0.5 WindowsWechat'
+        useragent = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36 QBCore/4.0.1316.400 QQBrowser/9.0.2524.400 Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2875.116 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat'
         super(WebEngineView, self).__init__(parent)
         self.mainwindow = mainwindow
         self.page().profile().setHttpUserAgent(useragent)
-        self.page().profile().setHttpAcceptLanguage('zh-CN,zh')
+        # self.page().profile().setHttpAcceptLanguage('zh-CN,zh')
+        self.page().profile().setHttpAcceptLanguage('zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.5;q=0.4')
         interceptor = MyQWebEngineUrlRequestInterceptor(self.mainwindow)
         self.page().profile().setUrlRequestInterceptor(interceptor)
         self.page().profile().setRequestInterceptor(interceptor)
