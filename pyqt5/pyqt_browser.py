@@ -20,6 +20,11 @@ class MyQWebEngineUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
 
 # 创建主窗口
 class MainWindow(QMainWindow):
+    def closeEvent(self, *args, **kwargs):
+        print(self)
+        print(*args)
+        print(**kwargs)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # 设置窗口标题
@@ -35,13 +40,14 @@ class MainWindow(QMainWindow):
         self.tabWidget.setMovable(True)
         self.tabWidget.setTabsClosable(True)
         self.tabWidget.tabCloseRequested.connect(self.close_Tab)
+
         self.setCentralWidget(self.tabWidget)
 
         # 第一个tab页面
         self.webview = WebEngineView(self)  # self必须要有，是将主窗口作为参数，传给浏览器
 
-        # self.webview.load(QUrl("http://localhost/index.php"))
-        self.webview.load(QUrl("http://192.168.1.102:8099/backend/site/login"))
+        self.webview.load(QUrl("http://localhost/index.php"))
+        # self.webview.load(QUrl("http://192.168.1.102:8099/backend/site/login"))
         # self.webview.load(QUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx636a8419238f974e&redirect_uri=https%3A%2F%2Fgzl.yitong111.com%2Ffrontend%2Fsite%2Fadd-user&response_type=code&scope=snsapi_userinfo&state=769ed0a09a33c9cb306b58b589ff6750&uin=MTU5NzA1MjcwNQ%3D%3D&key=abfa9467dbd5851e5c89936aeb3907bdb04d2567a190547c482ecae09dd6534f710de62282cdd3958c73474c20b567d72210515ba9803eff6de664727e95b722e493ba4e462f8defbf85c862d07651e212dac4a82982b9c2b264456996a67065c0f622388f24187f051b6c244f2b90a9a67dc8617b1cbbceedba9f0c502c056a&version=63010043&pass_ticket=IjzkjgFeyizqCAm3Nt9dlI2pF1kW6IaVwVGGY2cCCfS2LSZ7t3MGVOVt2%2FedOu3y"))
 
         self.create_tab(self.webview)
@@ -141,11 +147,14 @@ class WebEngineView(QWebEngineView):
     def getHtmlText(self):
         # pass
         # self.page().toHtml(lambda text: print(text))
-        # self.page().runJavaScript('''function getname(){
-        #     alert(window.navigator.webdriver)
-        # };
-        # getname();
-        # ''')
+        self.page().runJavaScript('''function getname(){
+            alert(window.navigator.webdriver);
+            for(var i in window){
+                document.write(i,':',window[i],'<br />')
+            }
+        };
+        getname();
+        ''')
         # print(self.page().profile().httpAcceptLanguage())
         print(self.page().profile().storageName())
         print(self.page().profile().persistentStoragePath())
